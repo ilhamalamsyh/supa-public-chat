@@ -1,0 +1,52 @@
+# dependencies
+node_modules/
+
+# production
+/dist/
+/build/
+
+# Astro build output
+/.astro/
+
+# dotenv environment variables
+.env
+.env.*
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# test coverage
+coverage/
+
+# editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# misc
+*.log
+
+# next.js/other frameworks (safe to ignore if not used)
+.next/
+out/
+
+# vercel/netlify
+.vercel/
+.netlify/
+
+# typescript
+*.tsbuildinfo
+
+# lock files (optional, if you want to ignore them)
+# package-lock.json
+yarn.lock
+pnpm-lock.yaml

@@ -1,0 +1,37 @@
+import { defineMiddleware } from "astro:middleware";
+import { supabase } from "./lib/supabase/client";
+
+export const onRequest = defineMiddleware(
+  async ({ request, redirect, locals }, next) => {
+    const url = new URL(request.url);
+    const isAuthPage =
+      url.pathname === "/login" || url.pathname === "/register";
+    const isProtectedRoute = url.pathname === "/chat";
+
+    // Get session from Supabase
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    if (isProtectedRoute && !session) {
+      // Redirect to login if trying to access protected route without session
+      return redirect("/login");
+    }
+
+    if (isAuthPage && session) {
+      // Redirect to chat if already authenticated
+      return redirect("/chat");
+    }
+
+    // Add user info to locals for use in components
+    if (session?.user) {
+      locals.user = {
+        id: session.user.id,
+        email: session.user.email!,
+        username: session.user.user_metadata?.username || "Unknown",
+      };
+    }
+
+    return next();
+  }
+);
