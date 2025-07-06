@@ -1,15 +1,11 @@
 ---
-import Sidebar from '../components/Sidebar';
-import ChatList from '../components/ChatList';
-import ChatWindow from '../components/ChatWindow';
-import ProfilePanel from '../components/ProfilePanel';
+import Layout from '../layouts/Layout.astro';
+import AuthGuard from '../components/auth/AuthGuard';
+import ResponsiveChatLayout from '../components/ResponsiveChatLayout';
 ---
 
-<div class="min-h-screen bg-[#eaf0f3] flex items-center justify-center">
-  <div class="w-full max-w-[1600px] h-[900px] flex rounded-3xl shadow-2xl overflow-hidden">
-    <Sidebar />
-    <ChatList />
-    <ChatWindow />
-    <ProfilePanel />
-  </div>
-</div> 
+<Layout title="Chat - Chat App">
+  <AuthGuard client:load>
+    <ResponsiveChatLayout />
+  </AuthGuard>
+</Layout> 

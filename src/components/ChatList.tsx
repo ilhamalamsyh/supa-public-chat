@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/global.css";
 
 const chats = [
   {
@@ -62,7 +63,7 @@ const chats = [
 
 const ChatList: React.FC = () => {
   return (
-    <aside className="w-80 bg-white h-full rounded-l-3xl flex flex-col border-r border-gray-100 shadow-xl">
+    <aside className="w-full md:w-80 bg-white h-full rounded-none md:rounded-l-3xl flex flex-col border-r border-gray-100 shadow-xl">
       <div className="px-6 pt-8 pb-4">
         <h2 className="text-2xl font-semibold mb-6">Message</h2>
         <div className="relative mb-6">

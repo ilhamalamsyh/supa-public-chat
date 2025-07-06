@@ -1,3 +1,4 @@
+import "../styles/global.css";
 import React from "react";
 
 const user = {
@@ -32,7 +33,7 @@ const links = [
 
 const ProfilePanel: React.FC = () => {
   return (
-    <aside className="w-96 bg-white h-full rounded-r-3xl flex flex-col border-l border-gray-100 shadow-xl p-8">
+    <aside className="w-full md:w-96 bg-white h-full rounded-none md:rounded-r-3xl flex flex-col border-l border-gray-100 shadow-xl p-8">
       <div className="flex flex-col items-center mb-8">
         <img
           src={user.avatar}

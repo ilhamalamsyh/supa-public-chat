@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/global.css";
 
 const navItems = [
   {
@@ -81,7 +82,7 @@ const navItems = [
 
 const Sidebar: React.FC = () => {
   return (
-    <aside className="flex flex-col items-center bg-[#eaf0f3] h-full w-20 py-8 rounded-l-3xl shadow-xl">
+    <aside className="w-full md:w-20 flex flex-col items-center bg-[#eaf0f3] h-full py-8 rounded-none md:rounded-l-3xl shadow-xl">
       <div className="mb-12">
         <span className="text-2xl font-bold text-orange-500 tracking-wide">
           Cors

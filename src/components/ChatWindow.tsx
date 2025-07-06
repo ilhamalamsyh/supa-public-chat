@@ -1,3 +1,4 @@
+import "../styles/global.css";
 import { useRef, useEffect } from "react";
 
 const messages = [
