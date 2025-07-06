@@ -53,6 +53,29 @@ export const validateUsername = (
   };
 };
 
+export const validateName = (
+  name: string
+): { isValid: boolean; errors: string[] } => {
+  const errors: string[] = [];
+
+  if (name.length < 3) {
+    errors.push("Name must be at least 3 characters long");
+  }
+
+  if (name.length > 50) {
+    errors.push("Name must be less than 50 characters long");
+  }
+
+  if (!/^[a-zA-Z\s]+$/.test(name)) {
+    errors.push("Name can only contain letters and spaces");
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+  };
+};
+
 export const validateMessage = (
   message: string
 ): { isValid: boolean; errors: string[] } => {
