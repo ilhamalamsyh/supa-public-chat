@@ -5,7 +5,8 @@ import Input from "../ui/Input";
 import { validateEmail } from "../../utils/validation";
 
 const LoginForm: React.FC = () => {
-  const { signIn, isLoading, error, clearError } = useAuthStore();
+  const { signIn, isLoading, error, clearError, isAuthenticated } =
+    useAuthStore();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -13,6 +14,7 @@ const LoginForm: React.FC = () => {
   const [errors, setErrors] = useState<{ email?: string; password?: string }>(
     {}
   );
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     clearError();
@@ -53,6 +55,16 @@ const LoginForm: React.FC = () => {
     if (!validateForm()) return;
 
     await signIn(formData);
+
+    // Debug log
+    console.log("Token after signIn:", localStorage.getItem("auth_token"));
+
+    // Paksa reload jika token ada
+    if (localStorage.getItem("auth_token")) {
+      setTimeout(() => {
+        window.location.href = "/chat";
+      }, 100);
+    }
   };
 
   const emailIcon = (
@@ -141,13 +153,53 @@ const LoginForm: React.FC = () => {
 
             <Input
               label="Password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
               error={errors.password}
               icon={passwordIcon}
+              helperText={undefined}
+              rightIcon={
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-700 focus:outline-none"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10 0-1.657.403-3.22 1.125-4.575M15 12a3 3 0 11-6 0 3 3 0 016 0zm6.364-2.364A9.956 9.956 0 0021 9c0 5.523-4.477 10-10 10a9.956 9.956 0 01-4.364-.964M9.88 9.88a3 3 0 104.24 4.24"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm2.828-2.828A9.956 9.956 0 0121 12c0 5.523-4.477 10-10 10S1 17.523 1 12c0-2.21.896-4.21 2.343-5.657"
+                      />
+                    </svg>
+                  )}
+                </button>
+              }
               required
             />
 

@@ -5,7 +5,7 @@ import Input from "../ui/Input";
 import {
   validateEmail,
   validatePassword,
-  validateUsername,
+  validateName,
 } from "../../utils/validation";
 
 const RegisterForm: React.FC = () => {
@@ -14,13 +14,13 @@ const RegisterForm: React.FC = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    username: "",
+    name: "",
   });
   const [errors, setErrors] = useState<{
     email?: string;
     password?: string;
     confirmPassword?: string;
-    username?: string;
+    name?: string;
   }>({});
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const RegisterForm: React.FC = () => {
       email?: string;
       password?: string;
       confirmPassword?: string;
-      username?: string;
+      name?: string;
     } = {};
 
     // Email validation
@@ -52,12 +52,12 @@ const RegisterForm: React.FC = () => {
       newErrors.email = "Please enter a valid email";
     }
 
-    // Username validation
-    const usernameValidation = validateUsername(formData.username);
-    if (!formData.username) {
-      newErrors.username = "Username is required";
-    } else if (!usernameValidation.isValid) {
-      newErrors.username = usernameValidation.errors[0];
+    // Name validation
+    const nameValidation = validateName(formData.name);
+    if (!formData.name) {
+      newErrors.name = "Name is required";
+    } else if (!nameValidation.isValid) {
+      newErrors.name = nameValidation.errors[0];
     }
 
     // Password validation
@@ -87,7 +87,7 @@ const RegisterForm: React.FC = () => {
     await signUp({
       email: formData.email,
       password: formData.password,
-      username: formData.username,
+      username: formData.name,
     });
   };
 
@@ -186,15 +186,15 @@ const RegisterForm: React.FC = () => {
             )}
 
             <Input
-              label="Username"
+              label="Name"
               type="text"
-              name="username"
-              value={formData.username}
+              name="name"
+              value={formData.name}
               onChange={handleChange}
-              placeholder="Choose a username"
-              error={errors.username}
+              placeholder="Enter your full name"
+              error={errors.name}
               icon={userIcon}
-              helperText="3-20 characters, letters, numbers, and underscores only"
+              helperText="3-50 characters, letters and spaces only"
               required
             />
 
