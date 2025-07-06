@@ -80,30 +80,6 @@ const navItems = [
   },
 ];
 
-const Sidebar: React.FC = () => {
-  return (
-    <aside className="w-full md:w-20 flex flex-col items-center bg-[#eaf0f3] h-full py-8 rounded-none md:rounded-l-3xl shadow-xl">
-      <div className="mb-12">
-        <span className="text-2xl font-bold text-orange-500 tracking-wide">
-          Cors
-        </span>
-      </div>
-      <nav className="flex flex-col gap-8 flex-1">
-        {navItems.map((item, idx) => (
-          <a
-            key={item.label}
-            href={item.href}
-            className="flex flex-col items-center group"
-          >
-            <div className="p-3 rounded-xl group-hover:bg-white group-hover:shadow transition-all">
-              {item.icon}
-            </div>
-            <span className="sr-only">{item.label}</span>
-          </a>
-        ))}
-      </nav>
-    </aside>
-  );
-};
+const Sidebar: React.FC = () => null;
 
 export default Sidebar;
