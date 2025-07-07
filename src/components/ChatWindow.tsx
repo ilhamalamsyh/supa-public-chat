@@ -105,31 +105,58 @@ const ChatWindow: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col overflow-hidden">
       <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6 bg-[#232837]">
-        {messages.map((msg) => (
-          <div key={msg.id} className="flex items-start gap-3">
-            <img
-              src={msg.avatar}
-              alt={msg.user}
-              className="w-10 h-10 rounded-full object-cover mt-1"
-            />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="font-semibold text-white text-base">
-                  {msg.user}
-                </span>
-                <span className="text-xs text-gray-400">{msg.time}</span>
-                {msg.edited && (
-                  <span className="text-xs text-gray-500 italic ml-2">
-                    edited
+        {messages.map((msg) => {
+          const isCurrentUser = msg.user === "You";
+          return (
+            <div
+              key={msg.id}
+              className={`flex items-end gap-3 ${
+                isCurrentUser ? "justify-end" : "justify-start"
+              }`}
+            >
+              {!isCurrentUser && (
+                <img
+                  src={msg.avatar}
+                  alt={msg.user}
+                  className="w-10 h-10 rounded-full object-cover mt-1"
+                />
+              )}
+              <div
+                className={`flex flex-col ${
+                  isCurrentUser ? "items-end" : "items-start"
+                } min-w-0 max-w-[70%]`}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-semibold text-white text-base">
+                    {msg.user}
                   </span>
-                )}
+                  <span className="text-xs text-gray-400">{msg.time}</span>
+                  {msg.edited && (
+                    <span className="text-xs text-gray-500 italic ml-2">
+                      edited
+                    </span>
+                  )}
+                </div>
+                <div
+                  className={
+                    isCurrentUser
+                      ? "bg-gradient-to-r from-purple-500 to-purple-700 text-white rounded-br-2xl rounded-tl-2xl rounded-bl-md px-5 py-3 shadow-lg text-sm break-words"
+                      : "bg-[#181c23] text-gray-100 rounded-bl-2xl rounded-tr-2xl rounded-br-md px-5 py-3 shadow text-sm break-words"
+                  }
+                >
+                  {msg.content}
+                </div>
               </div>
-              <div className="bg-[#181c23] text-gray-100 rounded-2xl px-5 py-3 shadow max-w-2xl text-sm break-words">
-                {msg.content}
-              </div>
+              {isCurrentUser && (
+                <img
+                  src={msg.avatar}
+                  alt={msg.user}
+                  className="w-10 h-10 rounded-full object-cover mt-1"
+                />
+              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
         <div ref={messagesEndRef} />
       </div>
       {/* Input Bar */}
@@ -151,16 +178,11 @@ const ChatWindow: React.FC = () => {
         >
           <svg
             className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
+            fill="currentColor"
             viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 13l4 4L19 7"
-            />
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
           </svg>
         </button>
       </form>
