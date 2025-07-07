@@ -9,7 +9,7 @@ import {
 } from "../../utils/validation";
 
 const RegisterForm: React.FC = () => {
-  const { signUp, isLoading, error, clearError, isAuthenticated } =
+  const { signUp, signIn, isLoading, error, clearError, isAuthenticated } =
     useAuthStore();
   const [formData, setFormData] = useState({
     email: "",
@@ -23,6 +23,7 @@ const RegisterForm: React.FC = () => {
     confirmPassword?: string;
     name?: string;
   }>({});
+  const [autoLoginError, setAutoLoginError] = useState<string | null>(null);
 
   useEffect(() => {
     clearError();
@@ -30,6 +31,13 @@ const RegisterForm: React.FC = () => {
       window.location.replace("/chat");
     }
   }, [clearError, isAuthenticated]);
+
+  // Redirect to /chat after successful registration
+  useEffect(() => {
+    if (isAuthenticated) {
+      window.location.replace("/chat");
+    }
+  }, [isAuthenticated]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -88,11 +96,24 @@ const RegisterForm: React.FC = () => {
 
     if (!validateForm()) return;
 
+    setAutoLoginError(null);
     await signUp({
       email: formData.email,
       password: formData.password,
       username: formData.name,
     });
+    // Auto-login after successful registration
+    const loginResult = await signIn({
+      email: formData.email,
+      password: formData.password,
+    });
+    // Debug log
+    console.log("Auto-login result after register:", loginResult);
+    if (!localStorage.getItem("auth_token")) {
+      setAutoLoginError(
+        "Auto-login failed after registration. Please try logging in manually."
+      );
+    }
   };
 
   const userIcon = (
@@ -183,6 +204,24 @@ const RegisterForm: React.FC = () => {
                     />
                   </svg>
                   <p className="ml-3 text-sm text-red-300">{error}</p>
+                </div>
+              </div>
+            )}
+            {autoLoginError && (
+              <div className="bg-red-900/10 border border-red-900/30 rounded-xl p-4 mt-2">
+                <div className="flex">
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <p className="ml-3 text-sm text-red-300">{autoLoginError}</p>
                 </div>
               </div>
             )}

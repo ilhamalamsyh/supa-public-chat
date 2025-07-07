@@ -21,6 +21,7 @@ export class AuthService {
           email: string;
           name: string;
         };
+        token?: string;
         message?: string;
         error?: string;
       }>("/auth/register", payload);
@@ -29,7 +30,9 @@ export class AuthService {
         return { user: null, session: null, error: response.error };
       }
 
-      if (response.user) {
+      if (response.user && response.token) {
+        // Store the token in localStorage for future requests
+        localStorage.setItem("auth_token", response.token);
         return {
           user: {
             id: response.user.id,
@@ -37,7 +40,7 @@ export class AuthService {
             username: response.user.name,
             avatar_url: undefined,
           },
-          session: null, // API doesn't return session, we'll handle this differently
+          session: { access_token: response.token },
         };
       }
 
