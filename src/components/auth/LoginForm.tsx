@@ -18,7 +18,10 @@ const LoginForm: React.FC = () => {
 
   useEffect(() => {
     clearError();
-  }, [clearError]);
+    if (isAuthenticated || localStorage.getItem("auth_token")) {
+      window.location.replace("/chat");
+    }
+  }, [clearError, isAuthenticated]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -118,7 +121,7 @@ const LoginForm: React.FC = () => {
 
         {/* Form Card */}
         <div className="bg-background-card/90 backdrop-blur-sm rounded-2xl shadow-xl border border-background-main p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" method="post">
             {error && (
               <div className="bg-red-900/10 border border-red-900/30 rounded-xl p-4">
                 <div className="flex">

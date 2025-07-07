@@ -15,7 +15,11 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         window.location.pathname === "/login" ||
         window.location.pathname === "/register";
       if (!token) {
-        window.location.href = "/login";
+        if (!isLoginOrRegister) {
+          window.location.href = "/login";
+        } else {
+          setChecking(false);
+        }
         return;
       }
       // Validate token with backend if possible
@@ -79,7 +83,13 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
     );
   }
 
-  if (!isValid) return null;
+  const isLoginOrRegister =
+    typeof window !== "undefined" &&
+    (window.location.pathname === "/login" ||
+      window.location.pathname === "/register");
+
+  if (!isValid && !isLoginOrRegister) return null;
+
   return <>{children}</>;
 };
 
