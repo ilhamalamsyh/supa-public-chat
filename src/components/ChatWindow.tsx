@@ -82,8 +82,7 @@ const ChatWindow: React.FC = () => {
   }, [messages]);
 
   const handleSend = (e: React.FormEvent) => {
-    console.log("handleSend called");
-    alert("handleSend called");
+    // console.log("handleSend called");
     e.preventDefault();
     e.stopPropagation();
     if (!input.trim()) return false;

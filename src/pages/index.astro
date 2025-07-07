@@ -3,40 +3,40 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Welcome - Chat App">
-	<div class="min-h-screen bg-[#eaf0f3] flex flex-col">
+	<div class="min-h-screen bg-background-main flex flex-col">
 		<!-- Header -->
 		<header class="w-full max-w-6xl mx-auto flex items-center justify-between py-6 px-6 md:px-10">
 			<div class="flex items-center gap-2">
-				<span class="text-2xl font-bold text-gray-900 tracking-wide">Talkrow</span>
-				<span class="ml-2 bg-green-100 text-green-700 text-xs font-semibold px-2 py-0.5 rounded">BETA</span>
+				<span class="text-2xl font-bold text-white tracking-wide">Talkrow</span>
+				<span class="ml-2 bg-background-card text-green-300 text-xs font-semibold px-2 py-0.5 rounded">BETA</span>
 			</div>
 			<div class="flex items-center gap-4">
-				<a href="/login" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">Login</a>
-				<a href="/register" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-5 py-2 rounded-lg font-medium hover:from-green-500 hover:to-green-700 transition-all shadow-md">Register</a>
+				<a href="/login" class="text-gray-300 hover:text-white font-medium transition-colors">Login</a>
+				<a href="/register" class="bg-gradient-purple text-white px-5 py-2 rounded-lg font-medium hover:opacity-90 transition-all shadow-md">Register</a>
 			</div>
 		</header>
 
 		<!-- Hero Section -->
-		<main class="flex-1 w-full bg-[#eaf7ef] flex flex-col items-center justify-center px-4 py-8 md:py-16">
+		<main class="flex-1 w-full bg-background-card flex flex-col items-center justify-center px-4 py-8 md:py-16">
 			<div class="max-w-5xl w-full mx-auto grid md:grid-cols-2 gap-10 items-center">
 				<div class="flex flex-col gap-6">
-					<span class="inline-block bg-white/80 text-green-700 text-xs font-semibold px-3 py-1 rounded-full w-max mb-2 shadow">Private Messaging Platform</span>
-					<h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2 leading-tight">
-						<span class="text-green-600">Say Hi!</span> To Your <br /> Friends & Family
+					<span class="inline-block bg-background-main text-purple-300 text-xs font-semibold px-3 py-1 rounded-full w-max mb-2 shadow">Private Messaging Platform</span>
+					<h1 class="text-4xl md:text-5xl font-bold text-white mb-2 leading-tight">
+						<span class="text-primary-purple">Say Hi!</span> To Your <br /> Friends & Family
 					</h1>
-					<p class="text-gray-600 text-lg mb-4">
+					<p class="text-gray-300 text-lg mb-4">
 						Rich, interactive messaging experiences to share every precious moment with your closest person. Maintain all the privacy required.
 					</p>
 					<div class="flex gap-4 mt-2">
-						<a href="/register" class="bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-3 rounded-lg font-semibold shadow hover:from-green-500 hover:to-green-700 transition">Get Started</a>
-						<a href="/login" class="bg-white border border-green-200 text-green-700 px-6 py-3 rounded-lg font-semibold shadow hover:bg-green-50 transition">Login</a>
+						<a href="/register" class="bg-gradient-purple text-white px-6 py-3 rounded-lg font-semibold shadow hover:opacity-90 transition">Get Started</a>
+						<a href="/login" class="bg-background-main border border-primary-purple text-primary-purple px-6 py-3 rounded-lg font-semibold shadow hover:bg-background-card transition">Login</a>
 					</div>
 				</div>
 				<div class="flex flex-col items-center justify-center relative">
-					<img src="https://undraw.co/api/illustrations/undraw_chatting_re_j55r.svg" alt="Chat Illustration" class="w-full max-w-xs md:max-w-md rounded-xl shadow-lg border border-green-100 bg-white" />
-					<div class="absolute left-0 -bottom-8 bg-white rounded-xl shadow px-4 py-2 flex items-center gap-2 border border-green-100">
-						<img src="https://ui-avatars.com/api/?name=Mark&background=22c55e&color=fff" class="w-8 h-8 rounded-full" alt="avatar" />
-						<span class="text-sm text-gray-700">"I've just got the spot!"</span>
+					<img src="https://undraw.co/api/illustrations/undraw_chatting_re_j55r.svg" alt="Chat Illustration" class="w-full max-w-xs md:max-w-md rounded-xl shadow-lg border border-background-main bg-background-card" />
+					<div class="absolute left-0 -bottom-8 bg-background-card rounded-xl shadow px-4 py-2 flex items-center gap-2 border border-background-main">
+						<img src="https://ui-avatars.com/api/?name=Mark&background=7c3aed&color=fff" class="w-8 h-8 rounded-full" alt="avatar" />
+						<span class="text-sm text-gray-300">"I've just got the spot!"</span>
 					</div>
 				</div>
 			</div>
@@ -44,49 +44,49 @@ import Layout from '../layouts/Layout.astro';
 
 		<!-- Features Section -->
 		<section class="w-full max-w-5xl mx-auto py-12 px-4 grid md:grid-cols-3 gap-8">
-			<div class="bg-white rounded-xl shadow p-6 flex flex-col items-center text-center">
-				<div class="w-10 h-10 bg-green-100 flex items-center justify-center rounded-full mb-3">
-					<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+			<div class="bg-background-card rounded-xl shadow p-6 flex flex-col items-center text-center">
+				<div class="w-10 h-10 bg-background-main flex items-center justify-center rounded-full mb-3">
+					<svg class="w-6 h-6 text-primary-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
 				</div>
-				<h3 class="font-semibold text-lg mb-1">Realtime Messaging</h3>
-				<p class="text-gray-500 text-sm">Send and receive messages instantly with live updates and typing indicators.</p>
+				<h3 class="font-semibold text-lg mb-1 text-white">Realtime Messaging</h3>
+				<p class="text-gray-400 text-sm">Send and receive messages instantly with live updates and typing indicators.</p>
 			</div>
-			<div class="bg-white rounded-xl shadow p-6 flex flex-col items-center text-center">
-				<div class="w-10 h-10 bg-green-100 flex items-center justify-center rounded-full mb-3">
-					<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" /></svg>
+			<div class="bg-background-card rounded-xl shadow p-6 flex flex-col items-center text-center">
+				<div class="w-10 h-10 bg-background-main flex items-center justify-center rounded-full mb-3">
+					<svg class="w-6 h-6 text-primary-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" /></svg>
 				</div>
-				<h3 class="font-semibold text-lg mb-1">Private & Secure</h3>
-				<p class="text-gray-500 text-sm">End-to-end encryption assures your personal chat is private and safe.</p>
+				<h3 class="font-semibold text-lg mb-1 text-white">Private & Secure</h3>
+				<p class="text-gray-400 text-sm">End-to-end encryption assures your personal chat is private and safe.</p>
 			</div>
-			<div class="bg-white rounded-xl shadow p-6 flex flex-col items-center text-center">
-				<div class="w-10 h-10 bg-green-100 flex items-center justify-center rounded-full mb-3">
-					<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+			<div class="bg-background-card rounded-xl shadow p-6 flex flex-col items-center text-center">
+				<div class="w-10 h-10 bg-background-main flex items-center justify-center rounded-full mb-3">
+					<svg class="w-6 h-6 text-primary-purple" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
 				</div>
-				<h3 class="font-semibold text-lg mb-1">For All Devices</h3>
-				<p class="text-gray-500 text-sm">Access your chat from any device, anytime, anywhere. Fully responsive design.</p>
+				<h3 class="font-semibold text-lg mb-1 text-white">For All Devices</h3>
+				<p class="text-gray-400 text-sm">Access your chat from any device, anytime, anywhere. Fully responsive design.</p>
 			</div>
 		</section>
 
 		<!-- Stats Section -->
 		<section class="w-full max-w-5xl mx-auto py-8 px-4 grid md:grid-cols-3 gap-8">
 			<div class="flex flex-col items-center text-center">
-				<span class="text-2xl font-bold text-green-600 mb-1">12M+</span>
-				<span class="text-gray-700 font-medium">App Downloads</span>
+				<span class="text-2xl font-bold text-primary-purple mb-1">12M+</span>
+				<span class="text-gray-300 font-medium">App Downloads</span>
 			</div>
 			<div class="flex flex-col items-center text-center">
-				<span class="text-2xl font-bold text-green-600 mb-1">99%</span>
-				<span class="text-gray-700 font-medium">Positive Feedback</span>
+				<span class="text-2xl font-bold text-primary-purple mb-1">99%</span>
+				<span class="text-gray-300 font-medium">Positive Feedback</span>
 			</div>
 			<div class="flex flex-col items-center text-center">
-				<span class="text-2xl font-bold text-green-600 mb-1">1k+</span>
-				<span class="text-gray-700 font-medium">Development Members</span>
+				<span class="text-2xl font-bold text-primary-purple mb-1">1k+</span>
+				<span class="text-gray-300 font-medium">Development Members</span>
 			</div>
 		</section>
 
 		<!-- Footer -->
-		<footer class="bg-white/80 backdrop-blur-md border-t border-white/20 py-6 mt-10">
+		<footer class="bg-background-card backdrop-blur-md border-t border-background-main py-6 mt-10">
 			<div class="max-w-7xl mx-auto px-6 text-center">
-				<p class="text-gray-600 text-sm">
+				<p class="text-gray-400 text-sm">
 					© 2025 Talkrow. Built with ❤️ using modern web technologies.
 				</p>
 			</div>

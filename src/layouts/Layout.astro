@@ -19,7 +19,7 @@ const { title, description = "Real-time chat application built with Astro, React
     <title>{title}</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 min-h-screen font-sans">
+  <body class="bg-background-main min-h-screen font-sans">
     <slot />
   </body>
 </html>
@@ -36,6 +36,8 @@ const { title, description = "Real-time chat application built with Astro, React
   body {
     margin: 0;
     padding: 0;
+    background: #181c23;
+    color: #f3f4f6;
   }
 
   /* Custom scrollbar */
@@ -44,16 +46,16 @@ const { title, description = "Real-time chat application built with Astro, React
   }
 
   ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: #232837;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: #353a4a;
     border-radius: 3px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+    background: #44495a;
   }
 
   /* Smooth animations */
@@ -63,7 +65,7 @@ const { title, description = "Real-time chat application built with Astro, React
 
   /* Focus styles */
   *:focus {
-    outline: 2px solid #3b82f6;
+    outline: 2px solid #a78bfa;
     outline-offset: 2px;
   }
 </style> 

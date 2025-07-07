@@ -22,10 +22,10 @@ const Input: React.FC<InputProps> = ({
   const inputId = id || reactId;
 
   const baseClasses =
-    "block w-full px-4 py-3 border-2 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white/80 backdrop-blur-sm";
+    "block w-full px-4 py-3 border-2 rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-purple focus:border-primary-purple transition-all duration-200 bg-background-card text-white";
   const errorClasses = error
     ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-    : "border-gray-200 hover:border-gray-300";
+    : "border-background-main hover:border-background-card";
   const iconClasses = icon ? "pl-12" : "";
   const classes = `${baseClasses} ${errorClasses} ${iconClasses} ${className}`;
 
@@ -34,7 +34,7 @@ const Input: React.FC<InputProps> = ({
       {label && (
         <label
           htmlFor={inputId}
-          className="block text-sm font-semibold text-gray-700"
+          className="block text-sm font-semibold text-gray-300"
         >
           {label}
         </label>

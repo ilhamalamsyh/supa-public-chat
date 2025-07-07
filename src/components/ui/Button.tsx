@@ -27,16 +27,16 @@ const Button: React.FC<ButtonProps> = ({
 
   const variantClasses = {
     primary:
-      "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 shadow-lg hover:shadow-xl",
+      "bg-primary-purple text-white hover:bg-primary-purple-dark focus:ring-primary-purple shadow-lg hover:shadow-xl",
     secondary:
-      "bg-gray-600 text-white hover:bg-gray-700 focus:ring-gray-500 shadow-lg hover:shadow-xl",
+      "bg-background-card text-gray-300 hover:bg-background-main focus:ring-primary-purple shadow-lg hover:shadow-xl",
     outline:
-      "border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-green-500 shadow-lg hover:shadow-xl",
-    ghost: "text-gray-700 hover:bg-gray-100 focus:ring-gray-500",
+      "border-2 border-primary-purple bg-background-main text-primary-purple hover:bg-background-card focus:ring-primary-purple shadow-lg hover:shadow-xl",
+    ghost: "text-gray-300 hover:bg-background-card focus:ring-primary-purple",
     danger:
       "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-lg hover:shadow-xl",
     gradient:
-      "bg-gradient-to-r from-green-400 to-green-600 text-white hover:from-green-500 hover:to-green-700 focus:ring-green-500 shadow-lg hover:shadow-xl",
+      "bg-gradient-purple text-white hover:opacity-90 focus:ring-primary-purple shadow-lg hover:shadow-xl",
   };
 
   const sizeClasses = {

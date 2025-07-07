@@ -49,9 +49,9 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
 
   if (checking) {
     return (
-      <div className="w-full h-screen flex items-center justify-center bg-[#eaf0f3]">
+      <div className="w-full h-screen flex items-center justify-center bg-background-main">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+          <div className="w-16 h-16 bg-gradient-purple rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -66,7 +66,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
               />
             </svg>
           </div>
-          <p className="text-gray-600 text-lg">Checking authentication...</p>
+          <p className="text-gray-300 text-lg">Checking authentication...</p>
         </div>
       </div>
     );

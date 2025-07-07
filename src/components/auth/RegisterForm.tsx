@@ -136,11 +136,11 @@ const RegisterForm: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-[#eaf0f3]">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-background-main">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-r from-green-400 to-green-600 rounded-2xl flex items-center justify-center mb-6">
+          <div className="mx-auto w-16 h-16 bg-gradient-purple rounded-2xl flex items-center justify-center mb-6">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -155,19 +155,17 @@ const RegisterForm: React.FC = () => {
               />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Join ChatApp
-          </h2>
-          <p className="text-gray-600">
+          <h2 className="text-3xl font-bold text-white mb-2">Join ChatApp</h2>
+          <p className="text-gray-300">
             Create your account and start chatting with others
           </p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8">
+        <div className="bg-background-card/90 backdrop-blur-sm rounded-2xl shadow-xl border border-background-main p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+              <div className="bg-red-900/10 border border-red-900/30 rounded-xl p-4">
                 <div className="flex">
                   <svg
                     className="h-5 w-5 text-red-400"
@@ -180,7 +178,7 @@ const RegisterForm: React.FC = () => {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <p className="ml-3 text-sm text-red-800">{error}</p>
+                  <p className="ml-3 text-sm text-red-300">{error}</p>
                 </div>
               </div>
             )}
@@ -253,7 +251,7 @@ const RegisterForm: React.FC = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">
+                <span className="px-2 bg-background-card text-gray-400">
                   Already have an account?
                 </span>
               </div>
@@ -264,7 +262,7 @@ const RegisterForm: React.FC = () => {
           <div className="mt-6 text-center">
             <a
               href="/login"
-              className="text-green-600 hover:text-green-700 font-medium transition-colors"
+              className="text-primary-purple hover:text-primary-purple-dark font-medium transition-colors"
             >
               Sign in to your account
             </a>
