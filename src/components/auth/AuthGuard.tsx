@@ -11,6 +11,9 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       const token = localStorage.getItem("auth_token");
+      const isLoginOrRegister =
+        window.location.pathname === "/login" ||
+        window.location.pathname === "/register";
       if (!token) {
         window.location.href = "/login";
         return;
@@ -30,6 +33,10 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         );
         if (res.ok) {
           setIsValid(true);
+          if (isLoginOrRegister) {
+            window.history.replaceState(null, "", "/chat");
+            window.location.href = "/chat";
+          }
         } else if (res.status === 401 || res.status === 403) {
           localStorage.removeItem("auth_token");
           window.location.href = "/login";

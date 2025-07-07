@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import LoginForm from '../components/auth/LoginForm';
+import AuthGuard from '../components/auth/AuthGuard';
 ---
 
 <Layout title="Login - Chat App">
-  <LoginForm client:load />
+  <AuthGuard client:load>
+    <LoginForm client:load />
+  </AuthGuard>
 </Layout> 

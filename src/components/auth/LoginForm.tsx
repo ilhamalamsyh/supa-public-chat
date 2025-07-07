@@ -62,6 +62,7 @@ const LoginForm: React.FC = () => {
     // Paksa reload jika token ada
     if (localStorage.getItem("auth_token")) {
       setTimeout(() => {
+        window.history.replaceState(null, "", "/chat");
         window.location.href = "/chat";
       }, 100);
     }
