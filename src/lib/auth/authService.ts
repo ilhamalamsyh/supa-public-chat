@@ -120,12 +120,22 @@ export class AuthService {
     try {
       const token = localStorage.getItem("auth_token");
       if (!token) return null;
-
-      // You might need to implement a /auth/me endpoint to get current user
-      // For now, we'll return null and let the app handle it
-      return null;
+      const res = await fetch(
+        "https://hono-supa-api.vercel.app/api/user/profile",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const data = await res.json();
+      const user = data.user;
+      if (!res.ok || !user || !user.id) return null;
+      return {
+        id: user.id,
+        email: user.email,
+        username: user.name,
+        avatar_url: user.avatar_url,
+      };
     } catch (error) {
-      console.error("Error getting current user:", error);
       return null;
     }
   }
