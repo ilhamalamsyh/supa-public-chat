@@ -1,12 +1,40 @@
 import "../styles/global.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ChatList from "./ChatList";
 import ChatWindow from "./ChatWindow";
+import ChatRoom from "./chat/ChatRoom";
 import { useAuthStore } from "../stores/auth/authStore";
+import { useChatStore } from "../stores/chat/chatStore";
+import { supabase } from "../lib/supabase/client";
 
 const ResponsiveChatLayout: React.FC = () => {
-  const { signOut } = useAuthStore();
+  const { signOut, user } = useAuthStore();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const { publicRoomId, onlineUsers } = useChatStore();
+  const [roomName, setRoomName] = useState<string>("");
+
+  useEffect(() => {
+    const fetchRoom = async () => {
+      if (publicRoomId) {
+        const { data } = await supabase
+          .from("rooms")
+          .select("name")
+          .eq("id", publicRoomId)
+          .single();
+        if (data && data.name) setRoomName(data.name);
+      }
+    };
+    fetchRoom();
+  }, [publicRoomId]);
+
+  // Hitung unique user online (selain diri sendiri) dari presence
+  const uniqueOnlineUserIds = Array.from(
+    new Set((onlineUsers || []).map((u) => String(u.id)))
+  );
+  const otherOnlineUserIds = user
+    ? uniqueOnlineUserIds.filter((id) => String(id) !== String(user.id))
+    : uniqueOnlineUserIds;
+  const onlineCount = otherOnlineUserIds.length;
 
   const handleLogout = async () => {
     setShowLogoutModal(true);
@@ -28,12 +56,18 @@ const ResponsiveChatLayout: React.FC = () => {
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-[#232837]/60 bg-[#232837] rounded-t-2xl">
           <div>
-            <h2 className="text-xl font-bold text-white">Daily Chat</h2>
+            <h2 className="text-xl font-bold text-white">
+              {roomName || "Chat Room"}
+            </h2>
             <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              <span className="text-xs text-green-300 font-medium">
-                1 online
-              </span>
+              {onlineCount > 0 && (
+                <>
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  <span className="text-xs text-green-300 font-medium">
+                    {onlineCount} user{onlineCount > 1 ? "s" : ""} online
+                  </span>
+                </>
+              )}
             </div>
           </div>
           <button
@@ -45,7 +79,7 @@ const ResponsiveChatLayout: React.FC = () => {
         </div>
         {/* Chat Area */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          <ChatWindow />
+          <ChatRoom />
         </div>
         {/* Logout Confirmation Modal */}
         {showLogoutModal && (

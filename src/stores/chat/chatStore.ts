@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { ChatService } from "../../lib/chat/chatService";
+import { supabase } from "../../lib/supabase/client";
 import type { Message, User } from "../../types";
 
 interface ChatState {
@@ -9,6 +10,8 @@ interface ChatState {
   error: string | null;
   messageChannel: any;
   userStatusChannel: any;
+  publicRoomId: string | null;
+  presenceChannel: any; // presence channel supabase
 }
 
 interface ChatActions {
@@ -22,26 +25,34 @@ interface ChatActions {
   loadOnlineUsers: () => Promise<void>;
   addMessage: (message: Message) => void;
   updateUserStatus: (user: User) => void;
-  subscribeToMessages: () => void;
+  subscribeToMessages: (roomId: string) => void;
   subscribeToUserStatus: () => void;
   unsubscribe: () => void;
   clearError: () => void;
+  setPublicRoomId: (id: string) => void;
+  subscribeToPresence: (roomId: string, user: User) => void;
+  unsubscribePresence: () => void;
 }
 
-type ChatStore = ChatState & ChatActions;
-
-export const useChatStore = create<ChatStore>((set, get) => ({
+export const useChatStore = create<ChatState & ChatActions>((set, get) => ({
   messages: [],
   onlineUsers: [],
   isLoading: false,
   error: null,
   messageChannel: null,
   userStatusChannel: null,
+  publicRoomId: "29c284fe-30d2-4d09-a982-6b2aac5a70d3", // langsung pakai id room public dari user
+  presenceChannel: null,
+
+  setPublicRoomId: (id: string) => set({ publicRoomId: id }),
 
   loadMessages: async () => {
     set({ isLoading: true, error: null });
     try {
-      const messages = await ChatService.getMessages();
+      const { publicRoomId } = get();
+      if (!publicRoomId)
+        return set({ error: "No public room found", isLoading: false });
+      const messages = await ChatService.getMessages(publicRoomId);
       set({ messages: messages.reverse(), isLoading: false });
     } catch (error) {
       set({
@@ -58,17 +69,15 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     avatarUrl?: string
   ) => {
     try {
-      const message = await ChatService.sendMessage(
+      const { publicRoomId } = get();
+      if (!publicRoomId) return set({ error: "No public room found" });
+      await ChatService.sendMessage(
         content,
         userId,
+        publicRoomId,
         username,
         avatarUrl
       );
-      if (message) {
-        set((state) => ({
-          messages: [...state.messages, message],
-        }));
-      }
     } catch (error) {
       set({ error: "Failed to send message" });
     }
@@ -95,11 +104,11 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     }));
   },
 
-  subscribeToMessages: () => {
+  subscribeToMessages: (roomId: string) => {
     const { messageChannel } = get();
     if (messageChannel) return;
 
-    const channel = ChatService.subscribeToMessages((message) => {
+    const channel = ChatService.subscribeToMessages(roomId, (message) => {
       get().addMessage(message);
     });
 
@@ -110,8 +119,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     const { userStatusChannel } = get();
     if (userStatusChannel) return;
 
-    const channel = ChatService.subscribeToUserStatus((user) => {
-      get().updateUserStatus(user);
+    const channel = ChatService.subscribeToUserStatus(async () => {
+      // Setiap ada perubahan status user, refresh seluruh daftar online user
+      await get().loadOnlineUsers();
     });
 
     set({ userStatusChannel: channel });
@@ -133,5 +143,48 @@ export const useChatStore = create<ChatStore>((set, get) => ({
 
   clearError: () => {
     set({ error: null });
+  },
+
+  // === Presence Supabase ===
+  subscribeToPresence: (roomId: string, user: User) => {
+    const { presenceChannel } = get();
+    if (presenceChannel) return;
+    const channel = supabase.channel(`room-presence-${roomId}`, {
+      config: { presence: { key: user.id } },
+    });
+    channel.subscribe((status: string) => {
+      if (status === "SUBSCRIBED") {
+        channel.track({
+          id: user.id,
+          username: user.username,
+          avatar_url: user.avatar_url,
+        });
+      }
+    });
+    channel.on("presence", { event: "sync" }, () => {
+      const state = channel.presenceState();
+      // Map ke User[] dengan field default agar sesuai tipe
+      const users = Object.values(state)
+        .flat()
+        .filter(Boolean)
+        .map((u: any) => ({
+          id: u.id,
+          username: u.username,
+          avatar_url: u.avatar_url,
+          email: "",
+          created_at: "",
+          last_seen: "",
+          is_online: true,
+        }));
+      set({ onlineUsers: users });
+    });
+    set({ presenceChannel: channel });
+  },
+  unsubscribePresence: () => {
+    const { presenceChannel } = get();
+    if (presenceChannel) {
+      presenceChannel.unsubscribe();
+      set({ presenceChannel: null, onlineUsers: [] });
+    }
   },
 }));
