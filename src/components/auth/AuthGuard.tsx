@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useAuthStore } from "../../stores/auth/authStore";
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -7,6 +8,7 @@ interface AuthGuardProps {
 const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
   const [checking, setChecking] = useState(true);
   const [isValid, setIsValid] = useState(false);
+  const { user, setUser, getCurrentUser } = useAuthStore();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -22,7 +24,10 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
         }
         return;
       }
-      // Validate token with backend if possible
+      if (!user) {
+        const fetchedUser = await getCurrentUser();
+        if (fetchedUser) setUser(fetchedUser);
+      }
       try {
         const res = await fetch(
           "https://hono-supa-api.vercel.app/api/user/profile",
@@ -56,6 +61,7 @@ const AuthGuard: React.FC<AuthGuardProps> = ({ children }) => {
       }
     };
     checkAuth();
+    // eslint-disable-next-line
   }, []);
 
   if (checking) {
