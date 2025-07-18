@@ -136,7 +136,7 @@ const ChatRoom: React.FC = () => {
   return (
     <div
       style={{
-        height: "100vh",
+        height: "100%",
         display: "flex",
         flexDirection: "column",
         background: "#181c23",
@@ -148,6 +148,7 @@ const ChatRoom: React.FC = () => {
           flex: 1,
           overflowY: "auto",
           padding: 24,
+          paddingTop: 40, // Tambahkan padding top ekstra agar bubble pertama tidak kepotong header
           display: "flex",
           flexDirection: "column",
           gap: 18,
@@ -197,41 +198,62 @@ const ChatRoom: React.FC = () => {
                     message.user_id === user.id
                       ? "18px 18px 4px 18px"
                       : "18px 18px 18px 4px",
-                  padding: "14px 18px",
+                  padding: "8px 14px",
                   fontSize: 15,
                   boxShadow:
                     message.user_id === user.id
                       ? "0 2px 8px #a259ff22"
                       : "0 1px 4px #0002",
+                  position: "relative",
                 }}
               >
                 <div
                   style={{
-                    fontWeight: message.user_id === user.id ? 700 : 600,
+                    fontWeight: 600,
                     fontSize: 14,
                     marginBottom: 4,
-                    color: message.user_id === user.id ? "#fff" : "#a259ff",
+                    color: "#a259ff",
+                    display: message.user_id === user.id ? "none" : "block",
                   }}
                 >
-                  {message.username}
+                  {message.user_id === user.id ? null : message.username}
                 </div>
-                <div
-                  style={{
-                    width: "100%",
-                    height: message.user_id === user.id ? 2 : 1,
-                    background:
-                      message.user_id === user.id
-                        ? "rgba(255,255,255,0.35)"
-                        : "rgba(162,89,255,0.18)",
-                    marginBottom: 8,
-                  }}
-                />
                 <div>{message.content}</div>
+                {/* Bubble Tail */}
+                {message.user_id === user.id ? (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: -10,
+                      bottom: 0,
+                      width: 12,
+                      height: 16,
+                      background: "transparent",
+                      clipPath: "polygon(0 0, 100% 50%, 0 100%)",
+                      backgroundColor: "#6a36fc",
+                      zIndex: 2,
+                    }}
+                  />
+                ) : (
+                  <span
+                    style={{
+                      position: "absolute",
+                      left: -10,
+                      bottom: 0,
+                      width: 12,
+                      height: 16,
+                      background: "transparent",
+                      clipPath: "polygon(100% 0, 0 50%, 100% 100%)",
+                      backgroundColor: "#232837",
+                      zIndex: 2,
+                    }}
+                  />
+                )}
                 <div
                   style={{
                     fontSize: 11,
                     color: message.user_id === user.id ? "#e0d7ff" : "#888",
-                    marginTop: 8,
+                    marginTop: 4,
                     textAlign: "right",
                   }}
                 >
