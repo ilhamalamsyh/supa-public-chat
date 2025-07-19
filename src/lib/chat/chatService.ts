@@ -13,14 +13,23 @@ export class ChatService {
     return data.id;
   }
 
-  static async getMessages(roomId: string, limit = 50): Promise<Message[]> {
+  static async getMessages(
+    roomId: string,
+    limit = 10,
+    before?: string // ISO string of created_at
+  ): Promise<Message[]> {
+    console.log("[ChatService.getMessages] params:", { roomId, limit, before });
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from("messages")
         .select("*")
         .eq("room_id", roomId)
         .order("created_at", { ascending: false })
         .limit(limit);
+      if (before) {
+        query = query.lt("created_at", before);
+      }
+      const { data, error } = await query;
       if (error) {
         console.error("Error fetching messages:", error);
         return [];
