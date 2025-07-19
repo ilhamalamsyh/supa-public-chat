@@ -12,6 +12,9 @@ interface ChatState {
   userStatusChannel: any;
   publicRoomId: string | null;
   presenceChannel: any; // presence channel supabase
+  hasMore: boolean;
+  isLoadingMore: boolean;
+  oldestLoadedMessage: Message | null;
 }
 
 interface ChatActions {
@@ -32,6 +35,7 @@ interface ChatActions {
   setPublicRoomId: (id: string) => void;
   subscribeToPresence: (roomId: string, user: User) => void;
   unsubscribePresence: () => void;
+  loadOlderMessages: () => Promise<void>;
 }
 
 export const useChatStore = create<ChatState & ChatActions>((set, get) => ({
@@ -41,24 +45,77 @@ export const useChatStore = create<ChatState & ChatActions>((set, get) => ({
   error: null,
   messageChannel: null,
   userStatusChannel: null,
-  publicRoomId: "29c284fe-30d2-4d09-a982-6b2aac5a70d3", // langsung pakai id room public dari user
+  publicRoomId: "29c284fe-30d2-4d09-a982-6b2aac5a70d3",
   presenceChannel: null,
+  hasMore: true,
+  isLoadingMore: false,
+  oldestLoadedMessage: null,
 
   setPublicRoomId: (id: string) => set({ publicRoomId: id }),
 
   loadMessages: async () => {
     set({ isLoading: true, error: null });
+    console.log("[chatStore] loadMessages dipanggil");
     try {
       const { publicRoomId } = get();
       if (!publicRoomId)
         return set({ error: "No public room found", isLoading: false });
-      const messages = await ChatService.getMessages(publicRoomId);
-      set({ messages: messages.reverse(), isLoading: false });
+      const messages = await ChatService.getMessages(publicRoomId, 10);
+      console.log("[chatStore] loadMessages hasil:", messages);
+      set({
+        messages: messages.reverse(),
+        isLoading: false,
+        hasMore: messages.length === 10,
+        oldestLoadedMessage:
+          messages.length > 0 ? messages[messages.length - 1] : null,
+      });
     } catch (error) {
       set({
         error: "Failed to load messages",
         isLoading: false,
       });
+    }
+  },
+
+  loadOlderMessages: async () => {
+    const {
+      publicRoomId,
+      oldestLoadedMessage,
+      messages,
+      isLoadingMore,
+      hasMore,
+    } = get();
+    if (!publicRoomId || isLoadingMore || !hasMore) return;
+    set({ isLoadingMore: true });
+    console.log(
+      "[chatStore] loadOlderMessages dipanggil, before:",
+      oldestLoadedMessage?.created_at
+    );
+    try {
+      const before = oldestLoadedMessage?.created_at;
+      const olderMessages = await ChatService.getMessages(
+        publicRoomId,
+        10,
+        before
+      );
+      console.log("[chatStore] loadOlderMessages hasil:", olderMessages);
+      // Filter pesan lama yang belum ada di messages
+      const uniqueOlder = olderMessages.filter(
+        (msg) => !messages.some((m) => m.id === msg.id)
+      );
+      const newMessages = [...uniqueOlder.reverse(), ...messages];
+      console.log("[chatStore] messages setelah prepend:", newMessages);
+      set({
+        messages: newMessages,
+        isLoadingMore: false,
+        hasMore: olderMessages.length === 10,
+        oldestLoadedMessage:
+          olderMessages.length > 0
+            ? olderMessages[olderMessages.length - 1]
+            : oldestLoadedMessage,
+      });
+    } catch (error) {
+      set({ isLoadingMore: false });
     }
   },
 
@@ -93,9 +150,29 @@ export const useChatStore = create<ChatState & ChatActions>((set, get) => ({
   },
 
   addMessage: (message: Message) => {
-    set((state) => ({
-      messages: [...state.messages, message],
-    }));
+    set((state) => {
+      // Debug log
+      console.log("[addMessage] Dapat pesan realtime:", message);
+      // Cek apakah pesan sudah ada (hindari duplikat)
+      if (state.messages.some((m) => m.id === message.id)) {
+        console.log("[addMessage] Pesan sudah ada, skip:", message.id);
+        return {};
+      }
+      // Guard: hanya tambahkan jika pesan lebih baru dari pesan terakhir
+      if (state.messages.length > 0) {
+        const lastMsg = state.messages[state.messages.length - 1];
+        if (new Date(message.created_at) <= new Date(lastMsg.created_at)) {
+          console.log(
+            "[addMessage] Pesan bukan yang terbaru, skip:",
+            message.id
+          );
+          return {};
+        }
+      }
+      return {
+        messages: [...state.messages, message],
+      };
+    });
   },
 
   updateUserStatus: (user: User) => {
@@ -107,11 +184,14 @@ export const useChatStore = create<ChatState & ChatActions>((set, get) => ({
   subscribeToMessages: (roomId: string) => {
     const { messageChannel } = get();
     if (messageChannel) return;
-
+    console.log(
+      "[chatStore] subscribeToMessages dipanggil untuk room:",
+      roomId
+    );
     const channel = ChatService.subscribeToMessages(roomId, (message) => {
+      console.log("[subscribeToMessages] Pesan realtime diterima:", message);
       get().addMessage(message);
     });
-
     set({ messageChannel: channel });
   },
 
